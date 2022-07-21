@@ -8,11 +8,11 @@ if __name__ == '__main__':
     ax: Axes = fig.add_subplot(1, 1, 1)
     ax.set_xscale('log')
 
-    tool_names = [('squirrel', 'b', '--'), 
-                  ('sqlancer', 'g', '-.'), 
-                  ('sqlmix',   'r', ':')]
+    tool_names = [('squirrel', 'r', '--', 'SQUIRREL'), 
+                  ('sqlancer', 'g', '-.', 'SQLancer'), 
+                  ('sqlmix',   'b', ':', 'GRIFFIN')]
 
-    for (tool_name, c, ls) in tool_names:
+    for (tool_name, c, ls, label_name) in tool_names:
 
         p = PointConvertForFillBetween()
 
@@ -26,10 +26,11 @@ if __name__ == '__main__':
 
             p.add_plot(x, y)
 
-        ax.plot(p.x, p.y_avg, label=tool_name, ls=ls, c=c)
-        ax.fill_between(p.x, p.y_min, p.y_max, alpha=0.2, color=c, ls=ls)
-        ax.set_xlim(left=50)
+        ax.plot(p.x, p.y_avg, label=label_name, ls=ls, c=c)
+        ax.fill_between(p.x, p.y_min, p.y_max, alpha=0.2, facecolor=c)
+        ax.set_xlim(left=50, right=86400)
     
     fig.legend()
 
     fig.savefig("show.pdf", bbox_inches='tight')
+    fig.savefig("show.png")
