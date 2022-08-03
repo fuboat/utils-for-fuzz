@@ -1,3 +1,6 @@
 *~
 data/
 __pycache__/
+.vscode
+sig_handler_utils/example
+sig_handler_utils/example.o

@@ -16,6 +16,17 @@ import scipy.stats as st
 
 X = Y1 = Y2 = Y = Y_MIN = Y_MAX = List
 
+def number_with_suffix_to_number(number_expr: str) -> float:
+    x = float(number_expr.rstrip("kM"))    
+    if number_expr.endswith("k"):
+        base_number = 1000
+    elif number_expr.endswith("M"):
+        base_number = 1000000
+    else:
+        base_number = 1
+
+    return x * base_number
+
 def point_convert_for_fill_between_get_avg(x1: List, y1: List, x2: List, y2: List, y1_weight: int, y2_weight: int) -> Tuple [X, Y]:
     
     (x3, y31, y32) = point_convert_for_fill_between_get_both(x1, y1, x2, y2)
@@ -151,6 +162,8 @@ class PointConvertForFillBetweenV2:
         self.y_median = []
         self.y_95confidence_interval_min = []
         self.y_95confidence_interval_max = []
+        self.y_99confidence_interval_min = []
+        self.y_99confidence_interval_max = []
 
     def add_plot(self, x: List, y: List):
         self.xs.append(x)
@@ -199,6 +212,10 @@ class PointConvertForFillBetweenV2:
             (min_v, max_v) = st.t.interval(alpha=0.95, df=len(data)-1, loc=np.mean(data), scale=st.sem(data))
             self.y_95confidence_interval_min.append(min_v)
             self.y_95confidence_interval_max.append(max_v)
+
+            (min_v, max_v) = st.t.interval(alpha=0.99, df=len(data)-1, loc=np.mean(data), scale=st.sem(data))
+            self.y_99confidence_interval_min.append(min_v)
+            self.y_99confidence_interval_max.append(max_v)
 
 if __name__ == '__main__':
     fig = plt.figure(figsize=(9, 7))
